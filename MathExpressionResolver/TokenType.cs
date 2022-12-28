@@ -1,10 +1,11 @@
 ﻿namespace MathExpressionResolver
 {
-    internal enum TokenType
-    {
-        Number,
-        Operator,
-        OpenBracket,
-        CloseBracket
-    }
+  internal enum MathExpressionTokenType
+  {
+    Number,
+    Operator,
+    OpenBracket,
+    CloseBracket,
+    Function
+  }
 }

@@ -7,7 +7,7 @@ namespace MathExpressionResolver
     static void Main()
     {
       var supportedOperators = SupportedOperators.GetSupported();
-      var tokenizer = new TokenizerEx(supportedOperators);
+      var tokenizer = new MathExpressionTokenizer(supportedOperators);
 
       var expression = "((3 - 1) * 5,5 - 2^2) + 3";
 

@@ -5,22 +5,22 @@ namespace MathExpressionResolver
 {
   internal static class ShuntingYard
   {
-    public static Queue<(TokenType Type, string Value)> Convert(IEnumerable<(TokenType Type, string Operator)> tokens, SupportedOperators supportedOperators)
+    public static Queue<(MathExpressionTokenType Type, string Value)> Convert(IEnumerable<(MathExpressionTokenType Type, string Operator)> tokens, SupportedOperators supportedOperators)
     {
-      Queue<(TokenType Type, string Value)> outputQueue = new Queue<(TokenType Type, string Value)>();
-      Stack<(TokenType Type, string Value)> stack = new Stack<(TokenType Type, string Value)>();
+      Queue<(MathExpressionTokenType Type, string Value)> outputQueue = new Queue<(MathExpressionTokenType Type, string Value)>();
+      Stack<(MathExpressionTokenType Type, string Value)> stack = new Stack<(MathExpressionTokenType Type, string Value)>();
 
       foreach (var token in tokens)
       {
         switch (token.Type)
         {
-          case TokenType.Number:
+          case MathExpressionTokenType.Number:
             // Если токен — число, то добавить его в очередь вывода
             outputQueue.Enqueue(token);
 
             break;
 
-          case TokenType.Operator:
+          case MathExpressionTokenType.Operator:
             /* Пока присутствует на вершине стека токен оператор op2, 
              * чей приоритет выше или равен приоритету op1, и 
              * при равенстве приоритетов op1 является левоассоциативным:
@@ -32,15 +32,15 @@ namespace MathExpressionResolver
 
             break;
 
-          case TokenType.OpenBracket:
+          case MathExpressionTokenType.OpenBracket:
             // Если токен — открывающая скобка, то положить его в стек
             stack.Push(token);
 
             break;
 
-          case TokenType.CloseBracket:
+          case MathExpressionTokenType.CloseBracket:
             // Пока токен на вершине стека не открывающая скобка
-            while (stack.Count > 0 && stack.Peek().Type != TokenType.OpenBracket)
+            while (stack.Count > 0 && stack.Peek().Type != MathExpressionTokenType.OpenBracket)
             {
               // Переложить оператор из стека в выходную очередь
               outputQueue.Enqueue(stack.Pop());
@@ -67,7 +67,7 @@ namespace MathExpressionResolver
         var token = stack.Pop();
 
         // Если токен оператор на вершине стека — открывающая скобка, то в выражении пропущена скобка
-        if (token.Type == TokenType.OpenBracket)
+        if (token.Type == MathExpressionTokenType.OpenBracket)
           throw new ArithmeticException("В выражении пропущена скобка.");
 
         // Переложить оператор из стека в выходную очередь
@@ -79,9 +79,9 @@ namespace MathExpressionResolver
 
     private static bool NeedNextAction
     (
-        (TokenType Type, string Value) current,
-        Queue<(TokenType Type, string Value)> outputQueue,
-        Stack<(TokenType Type, string Value)> stack,
+        (MathExpressionTokenType Type, string Value) current,
+        Queue<(MathExpressionTokenType Type, string Value)> outputQueue,
+        Stack<(MathExpressionTokenType Type, string Value)> stack,
         SupportedOperators supportedOperators
     )
     {
@@ -90,7 +90,7 @@ namespace MathExpressionResolver
 
       var previously = stack.Peek();
 
-      if (previously.Type == TokenType.Operator)
+      if (previously.Type == MathExpressionTokenType.Operator)
       {
         var compare = supportedOperators.CompareTo(previously.Value, current.Value);
 
