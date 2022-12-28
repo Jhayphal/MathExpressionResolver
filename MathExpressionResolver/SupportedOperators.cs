@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using static MathExpressionResolver.SupportedOperators;
+using static MathExpressionResolver.SupportedOperations;
 
 namespace MathExpressionResolver
 {
-  internal partial class SupportedOperators : IEnumerable<OperatorInfo>
+  internal partial class SupportedOperations : IEnumerable<IOperationInfo>
   {
-    private readonly HashSet<OperatorInfo> Operators = new HashSet<OperatorInfo>();
+    private readonly HashSet<IOperationInfo> Operators = new HashSet<IOperationInfo>();
 
-    public static SupportedOperators GetSupported()
+    public static SupportedOperations GetSupported()
     {
-      var result = new SupportedOperators();
+      var result = new SupportedOperations();
 
       result.Add(@operator: "+", priority: 0, leftAssociative: true, calculate: (a, b) => a + b);
       result.Add(@operator: "-", priority: 0, leftAssociative: true, calculate: (a, b) => a - b);
       result.Add(@operator: "*", priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
       result.Add(@operator: "/", priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
       result.Add(@operator: "^", priority: 2, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
-      result.Add(@operator: "abs", priority: 3, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
+      result.Add(@operator: "abs", priority: 3, calculate: a => Math.Abs(a));
 
       return result;
     }
@@ -30,12 +30,26 @@ namespace MathExpressionResolver
       return Operators.Add(newItem);
     }
 
-    public double Calculate(string @operator, double a, double b) => GetOperator(@operator).Calculate(a, b);
+    public bool Add(string @operator, int priority, Func<double, double> calculate)
+    {
+      var newItem = new UnaryFunctionInfo(@operator, priority, calculate);
+
+      return Operators.Add(newItem);
+    }
+
+    public bool Add(string @operator, int priority, Func<double, double, double> calculate)
+    {
+      var newItem = new BinaryFunctionInfo(@operator, priority, calculate);
+
+      return Operators.Add(newItem);
+    }
+
+    public double Calculate(string @operator, params double[] args) => GetOperator(@operator).Calculate(args);
 
     public int CompareTo(string operatorToCompare, string compareWith)
       => GetOperator(operatorToCompare).CompareTo(GetOperator(compareWith));
 
-    public IEnumerator<OperatorInfo> GetEnumerator() => Operators.GetEnumerator();
+    public IEnumerator<IOperationInfo> GetEnumerator() => Operators.GetEnumerator();
 
     public int GetOperatorPriority(char @operator) => GetOperatorPriority(@operator.ToString());
 
@@ -43,7 +57,7 @@ namespace MathExpressionResolver
 
     public bool IsLeftAssociative(char @operator) => IsLeftAssociative(@operator.ToString());
 
-    public bool IsLeftAssociative(string @operator) => GetOperator(@operator).LeftAssociative;
+    public bool IsLeftAssociative(string @operator) => GetOperator(@operator) is OperatorInfo currentOperator && currentOperator.LeftAssociative;
 
     public bool IsSupported(char @operator) => IsSupported(@operator.ToString());
 
@@ -58,7 +72,7 @@ namespace MathExpressionResolver
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private OperatorInfo GetOperator(string @operator)
+    private IOperationInfo GetOperator(string @operator)
     {
       foreach (var item in Operators)
         if (item.Equals(@operator))

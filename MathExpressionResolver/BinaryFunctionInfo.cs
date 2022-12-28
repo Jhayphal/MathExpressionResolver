@@ -4,19 +4,15 @@ namespace MathExpressionResolver
 {
   internal partial class SupportedOperations
   {
-    public class OperatorInfo : OperationInfoBase, IOperator
+    public class BinaryFunctionInfo : OperationInfoBase
     {
       private readonly Func<double, double, double> calculate;
 
-      public OperatorInfo(string @operator, int priority, bool leftAssociative, Func<double, double, double> calculate)
+      public BinaryFunctionInfo(string @operator, int priority, Func<double, double, double> calculate)
         : base(@operator, priority)
       {
-        LeftAssociative = leftAssociative;
-
         this.calculate = calculate ?? throw new ArgumentNullException(nameof(calculate));
       }
-
-      public bool LeftAssociative { get; }
 
       public override double Calculate(params double[] args) => calculate(args[0], args[1]);
     }

@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryFunctionInfo.cs" />
+    <Compile Include="IOperationInfo.cs" />
+    <Compile Include="OperationInfoBase.cs" />
     <Compile Include="OperatorInfo.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
@@ -52,6 +55,7 @@
     <Compile Include="SupportedOperators.cs" />
     <Compile Include="Tokenizer.cs" />
     <Compile Include="TokenType.cs" />
+    <Compile Include="UnaryFunctionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -6,7 +6,7 @@ namespace MathExpressionResolver
   {
     static void Main()
     {
-      var supportedOperators = SupportedOperators.GetSupported();
+      var supportedOperators = SupportedOperations.GetSupported();
       var tokenizer = new MathExpressionTokenizer(supportedOperators);
 
       var expression = "((3 - 1) * 5,5 - 2^2) + 3";
@@ -21,7 +21,7 @@ namespace MathExpressionResolver
       foreach (var item in tokens)
         Console.WriteLine(item.Type.ToString() + ": " + item.Value);
 
-      var reversePolishNotation = ShuntingYard.Convert(tokens, tokenizer.Operators);
+      var reversePolishNotation = ShuntingYard.Convert(tokens, tokenizer.Operations);
 
       Console.WriteLine();
       Console.WriteLine("Reverse Polish notation: ");
@@ -29,7 +29,7 @@ namespace MathExpressionResolver
       foreach (var item in reversePolishNotation)
         Console.WriteLine(item.Type.ToString() + ": " + item.Value);
 
-      var result = ReversePolishNotationResolver.Calculate(reversePolishNotation, tokenizer.Operators);
+      var result = ReversePolishNotationResolver.Calculate(reversePolishNotation, tokenizer.Operations);
 
       Console.WriteLine();
       Console.WriteLine("Result: " + result);

@@ -5,7 +5,7 @@ namespace MathExpressionResolver
 {
   internal static class ReversePolishNotationResolver
   {
-    public static double Calculate(Queue<(MathExpressionTokenType Type, string Value)> queue, SupportedOperators operators)
+    public static double Calculate(Queue<(MathExpressionTokenType Type, string Value)> queue, SupportedOperations operators)
     {
       if (queue == null)
         throw new ArgumentNullException(nameof(queue));

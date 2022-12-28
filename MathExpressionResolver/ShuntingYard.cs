@@ -5,7 +5,7 @@ namespace MathExpressionResolver
 {
   internal static class ShuntingYard
   {
-    public static Queue<(MathExpressionTokenType Type, string Value)> Convert(IEnumerable<(MathExpressionTokenType Type, string Operator)> tokens, SupportedOperators supportedOperators)
+    public static Queue<(MathExpressionTokenType Type, string Value)> Convert(IEnumerable<(MathExpressionTokenType Type, string Operator)> tokens, SupportedOperations supportedOperators)
     {
       Queue<(MathExpressionTokenType Type, string Value)> outputQueue = new Queue<(MathExpressionTokenType Type, string Value)>();
       Stack<(MathExpressionTokenType Type, string Value)> stack = new Stack<(MathExpressionTokenType Type, string Value)>();
@@ -82,7 +82,7 @@ namespace MathExpressionResolver
         (MathExpressionTokenType Type, string Value) current,
         Queue<(MathExpressionTokenType Type, string Value)> outputQueue,
         Stack<(MathExpressionTokenType Type, string Value)> stack,
-        SupportedOperators supportedOperators
+        SupportedOperations supportedOperators
     )
     {
       if (stack.Count == 0)
