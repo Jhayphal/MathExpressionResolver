@@ -3,47 +3,47 @@ using System.Collections.Generic;
 
 namespace MathExpressionResolver
 {
-    internal static class ReversePolishNotationResolver
+  internal static class ReversePolishNotationResolver
+  {
+    public static double Calculate(Queue<(TokenType Type, string Value)> queue, SupportedOperators operators)
     {
-        public static double Calculate(Queue<(TokenType Type, string Value)> queue, SupportedOperators operators)
+      if (queue == null)
+        throw new ArgumentNullException(nameof(queue));
+
+      Stack<double> operands = new Stack<double>();
+
+      if (queue.Count == 0)
+        return 0d;
+
+      while (queue.Count > 0)
+      {
+        var current = queue.Dequeue();
+
+        switch (current.Type)
         {
-            if (queue == null)
-                throw new ArgumentNullException(nameof(queue));
+          case TokenType.Number:
+            var value = double.Parse(current.Value);
 
-            Stack<double> operands = new Stack<double>();
+            operands.Push(value);
 
-            if (queue.Count == 0)
-                return 0d;
+            break;
 
-            while(queue.Count > 0)
-            {
-                var current = queue.Dequeue();
+          case TokenType.Operator:
+            var b = operands.Pop();
+            var a = operands.Pop();
 
-                switch (current.Type)
-                {
-                    case TokenType.Number:
-                        var value = double.Parse(current.Value);
-                        
-                        operands.Push(value);
+            var operationResult = operators.Calculate(current.Value, a, b);
 
-                        break;
+            operands.Push(operationResult);
 
-                    case TokenType.Operator:
-                        var b = operands.Pop();
-                        var a = operands.Pop();
+            break;
 
-                        var operationResult = operators.Calculate(current.Value, a, b);
-
-                        operands.Push(operationResult);
-
-                        break;
-
-                    default:
-                        throw new NotImplementedException(current.Type.ToString());
-                }
-            }
-
-            return operands.Pop();
+          default:
+            throw new NotImplementedException(current.Type.ToString());
         }
+      }
+
+      return operands.Pop();
     }
+  }
 }
