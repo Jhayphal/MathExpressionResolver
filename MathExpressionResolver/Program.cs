@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace MathExpressionResolver
 {
@@ -6,10 +7,28 @@ namespace MathExpressionResolver
   {
     static void Main()
     {
-      var supportedOperators = SupportedOperations.GetSupported();
-      var tokenizer = new MathExpressionTokenizer(supportedOperators);
+      var expression = "((2 + 3) * (1 + 2)) * 4 & -2";
+      CalculateAndPrint(expression);
+    }
 
-      var expression = "((3 - 1) * 5,5 - 2^2) + 3";
+    static void CalculateAndPrint(string expression)
+    {
+      var supportedOperations = SupportedOperations.GetSupported();
+      var tokenizer = new MathExpressionTokenizer(supportedOperations);
+
+      var tokens = tokenizer.GetTokens(expression);
+      var reversePolishNotation = ShuntingYard.Convert(tokens, tokenizer.Operations);
+      var result = ReversePolishNotationResolver.Calculate(reversePolishNotation, tokenizer.Operations);
+
+      Console.WriteLine($"{expression} = {result}");
+
+      Console.ReadLine();
+    }
+
+    static void CalculateAndPrintDetailed(string expression)
+    {
+      var supportedOperations = SupportedOperations.GetSupported();
+      var tokenizer = new MathExpressionTokenizer(supportedOperations);
 
       Console.WriteLine("Expression: " + expression);
 

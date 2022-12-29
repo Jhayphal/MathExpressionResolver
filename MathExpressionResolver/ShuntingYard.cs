@@ -53,6 +53,15 @@ namespace MathExpressionResolver
             // Выкинуть открывающую скобку из стека, но не добавлять в очередь вывода
             stack.Pop();
 
+            // Если токен на вершине стека — функция
+            if (stack.Count > 0 && stack.Peek().Type == MathExpressionTokenType.Function)
+              // Переложить её в выходную очередь
+              outputQueue.Enqueue(stack.Pop());
+
+            break;
+
+          case MathExpressionTokenType.Function:
+            stack.Push(token);
             break;
 
           default:

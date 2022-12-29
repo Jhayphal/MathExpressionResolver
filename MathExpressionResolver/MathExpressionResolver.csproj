@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="BinaryFunctionInfo.cs" />
     <Compile Include="IOperationInfo.cs" />
+    <Compile Include="IOperator.cs" />
+    <Compile Include="ITokenizer.cs" />
+    <Compile Include="MathExpressionTokenizer.cs" />
     <Compile Include="OperationInfoBase.cs" />
     <Compile Include="OperatorInfo.cs" />
     <Compile Include="Parser.cs" />

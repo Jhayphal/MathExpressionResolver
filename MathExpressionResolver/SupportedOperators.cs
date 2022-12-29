@@ -17,7 +17,7 @@ namespace MathExpressionResolver
       result.Add(@operator: "-", priority: 0, leftAssociative: true, calculate: (a, b) => a - b);
       result.Add(@operator: "*", priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
       result.Add(@operator: "/", priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
-      result.Add(@operator: "^", priority: 2, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
+      result.Add(@operator: "&", priority: 2, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
       result.Add(@operator: "abs", priority: 3, calculate: a => Math.Abs(a));
 
       return result;

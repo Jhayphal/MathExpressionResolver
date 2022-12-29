@@ -38,6 +38,15 @@ namespace MathExpressionResolver
 
             break;
 
+          case MathExpressionTokenType.Function:
+            var x = operands.Pop();
+
+            var functionResult = operators.Calculate(current.Value, x);
+
+            operands.Push(functionResult);
+
+            break;
+
           default:
             throw new NotImplementedException(current.Type.ToString());
         }
