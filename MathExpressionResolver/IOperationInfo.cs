@@ -2,15 +2,12 @@
 
 namespace MathExpressionResolver
 {
-  internal partial class SupportedOperations
+  public interface IOperationInfo : IEquatable<IOperationInfo>, IComparable<IOperationInfo>
   {
-    public interface IOperationInfo : IEquatable<IOperationInfo>, IComparable<IOperationInfo>
-    {
-      string Operator { get; }
+    string Operator { get; }
 
-      int Priority { get; }
+    int Priority { get; }
 
-      double Calculate(params double[] args);
-    }
+    double Calculate(params double[] args);
   }
 }

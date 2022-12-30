@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using static MathExpressionResolver.SupportedOperations;
 
 namespace MathExpressionResolver
 {
-  internal sealed class MathExpressionTokenizer : ITokenizer<MathExpressionTokenType>
+  internal class MathExpressionTokenizer : ITokenizer<MathExpressionTokenType>
   {
     private const string DecimalSeparator = ".";
     private const string Exponent = "e";
@@ -45,7 +44,7 @@ namespace MathExpressionResolver
 
     public readonly SupportedOperations Operations;
 
-    public IEnumerable<(MathExpressionTokenType Type, string Value)> GetTokens(string expression)
+    public virtual IEnumerable<(MathExpressionTokenType Type, string Value)> GetTokens(string expression)
     {
       foreach (var current in tokenizer.GetTokens(expression))
       {
@@ -56,7 +55,9 @@ namespace MathExpressionResolver
       }
 
       if (HasNumber())
+      {
         yield return PopNumber();
+      }
 
       context = MathExpressionTokenType.Unknown;
     }
@@ -144,7 +145,9 @@ namespace MathExpressionResolver
     private IEnumerable<(MathExpressionTokenType Type, string Value)> ProccessNumberContext((MathExpressionTokenType Type, string Value) token)
     {
       if (!HasNumber())
+      {
         throw new ArgumentException("Number cannot be empty in number context");
+      }
 
       string sign;
 
@@ -177,10 +180,6 @@ namespace MathExpressionResolver
             {
               throw new ArgumentException("Exponent duplicates");
             }
-            else if (currentNumber.Contains(DecimalSeparator))
-            {
-              throw new ArgumentException("Both exponent and decimal separator literals in one number");
-            }
             else
             {
               var lastLiteral = currentNumber.Peek();
@@ -189,13 +188,6 @@ namespace MathExpressionResolver
               {
                 throw new ArgumentException($"Invalid number. Exponent after '{lastLiteral}' literal");
               }
-            }
-          }
-          else // number
-          {
-            if (IsExponent(currentNumber.Peek()))
-            {
-              throw new ArgumentException($"Invalid number. Digit after exponent literal");
             }
           }
           

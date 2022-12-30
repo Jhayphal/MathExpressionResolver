@@ -1,10 +1,7 @@
 ﻿namespace MathExpressionResolver
 {
-  internal partial class SupportedOperations
+  public interface IOperator
   {
-    public interface IOperator
-    {
-      bool LeftAssociative { get; }
-    }
+    bool LeftAssociative { get; }
   }
 }

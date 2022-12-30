@@ -32,7 +32,9 @@ namespace MathExpressionResolver
         }
 
         if (!found)
+        {
           throw new InvalidCastException($"Undefined token: {token}");
+        }
       }
     }
   }

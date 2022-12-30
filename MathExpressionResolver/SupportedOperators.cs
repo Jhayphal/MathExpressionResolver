@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using static MathExpressionResolver.SupportedOperations;
 
 namespace MathExpressionResolver
 {
@@ -13,12 +12,27 @@ namespace MathExpressionResolver
     {
       var result = new SupportedOperations();
 
-      result.Add(@operator: "+", priority: 0, leftAssociative: true, calculate: (a, b) => a + b);
-      result.Add(@operator: "-", priority: 0, leftAssociative: true, calculate: (a, b) => a - b);
-      result.Add(@operator: "*", priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
-      result.Add(@operator: "/", priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
-      result.Add(@operator: "&", priority: 2, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
-      result.Add(@operator: "abs", priority: 3, calculate: a => Math.Abs(a));
+      result.Add(@operator: "log", priority: 0, calculate: x => Math.Log(x));
+      result.Add(@operator: "ln", priority: 0, calculate: Math.Log10);
+      result.Add(@operator: "exp", priority: 0, calculate: Math.Exp);
+      result.Add(@operator: "sqrt", priority: 0, calculate: Math.Sqrt);
+      result.Add(@operator: "abs", priority: 0, calculate: Math.Abs);
+      result.Add(@operator: "atan", priority: 0, calculate: Math.Atan);
+      result.Add(@operator: "acos", priority: 0, calculate: Math.Acos);
+      result.Add(@operator: "asin", priority: 0, calculate: Math.Asin);
+      result.Add(@operator: "sinh", priority: 0, calculate: Math.Sinh);
+      result.Add(@operator: "cosh", priority: 0, calculate: Math.Cosh);
+      result.Add(@operator: "tanh", priority: 0, calculate: Math.Tanh);
+      result.Add(@operator: "tan", priority: 0, calculate: Math.Tan);
+      result.Add(@operator: "sin", priority: 0, calculate: Math.Sin);
+      result.Add(@operator: "cos", priority: 0, calculate: Math.Cos);
+      result.Add(@operator: "cos", priority: 0, calculate: Math.Cos);
+      result.Add(@operator: "+", priority: 1, leftAssociative: true, calculate: (a, b) => a + b);
+      result.Add(@operator: "-", priority: 1, leftAssociative: true, calculate: (a, b) => a - b);
+      result.Add(@operator: "*", priority: 2, leftAssociative: true, calculate: (a, b) => a * b);
+      result.Add(@operator: "/", priority: 2, leftAssociative: true,
+        calculate: (a, b) => b == 0 ? throw new DivideByZeroException() : a / b);
+      result.Add(@operator: "&", priority: 3, leftAssociative: false, calculate: Math.Pow);
 
       return result;
     }
@@ -64,8 +78,12 @@ namespace MathExpressionResolver
     public bool IsSupported(string @operator)
     {
       foreach (var item in Operators)
+      {
         if (item.Equals(@operator))
+        {
           return true;
+        }
+      }
 
       return false;
     }
@@ -75,8 +93,12 @@ namespace MathExpressionResolver
     private IOperationInfo GetOperator(string @operator)
     {
       foreach (var item in Operators)
+      {
         if (item.Equals(@operator))
+        {
           return item;
+        }
+      }
 
       throw new ArgumentException($"Оператора '{@operator}' не существует.");
     }

@@ -8,12 +8,16 @@ namespace MathExpressionResolver
     public static double Calculate(Queue<(MathExpressionTokenType Type, string Value)> queue, SupportedOperations operators)
     {
       if (queue == null)
+      {
         throw new ArgumentNullException(nameof(queue));
+      }
 
       Stack<double> operands = new Stack<double>();
 
       if (queue.Count == 0)
+      {
         return 0d;
+      }
 
       while (queue.Count > 0)
       {

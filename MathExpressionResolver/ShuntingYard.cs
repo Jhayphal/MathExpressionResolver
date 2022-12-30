@@ -25,7 +25,10 @@ namespace MathExpressionResolver
              * чей приоритет выше или равен приоритету op1, и 
              * при равенстве приоритетов op1 является левоассоциативным:
              * Переложить op2 из стека в выходную очередь*/
-            while (NeedNextAction(token, outputQueue, stack, supportedOperators)) ;
+            while (NeedNextAction(token, outputQueue, stack, supportedOperators))
+            {
+              ;
+            }
 
             // Положить op1 в стек
             stack.Push(token);
@@ -47,7 +50,9 @@ namespace MathExpressionResolver
 
               // Если стек закончился до того, как был встречен токен открывающая скобка, то в выражении пропущена скобка
               if (stack.Count == 0)
+              {
                 throw new ArithmeticException("В выражении пропущена скобка.");
+              }
             }
 
             // Выкинуть открывающую скобку из стека, но не добавлять в очередь вывода
@@ -55,8 +60,10 @@ namespace MathExpressionResolver
 
             // Если токен на вершине стека — функция
             if (stack.Count > 0 && stack.Peek().Type == MathExpressionTokenType.Function)
+            {
               // Переложить её в выходную очередь
               outputQueue.Enqueue(stack.Pop());
+            }
 
             break;
 
@@ -77,7 +84,9 @@ namespace MathExpressionResolver
 
         // Если токен оператор на вершине стека — открывающая скобка, то в выражении пропущена скобка
         if (token.Type == MathExpressionTokenType.OpenBracket)
+        {
           throw new ArithmeticException("В выражении пропущена скобка.");
+        }
 
         // Переложить оператор из стека в выходную очередь
         outputQueue.Enqueue(token);
@@ -95,7 +104,9 @@ namespace MathExpressionResolver
     )
     {
       if (stack.Count == 0)
+      {
         return false;
+      }
 
       var previously = stack.Peek();
 

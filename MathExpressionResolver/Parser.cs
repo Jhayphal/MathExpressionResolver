@@ -12,7 +12,9 @@ namespace MathExpressionResolver
     public Parser(IEnumerable<string> tokens, bool caseSensetive)
     {
       if (!(tokens?.Any()).GetValueOrDefault())
+      {
         throw new ArgumentException(nameof(tokens));
+      }
 
       this.caseSensetive = caseSensetive;
       this.tokens = new HashSet<string>(this.caseSensetive ? tokens : tokens.Select(s => s.ToLowerInvariant())); 
@@ -21,7 +23,9 @@ namespace MathExpressionResolver
     public IEnumerable<string> Parse(string text)
     {
       if (string.IsNullOrWhiteSpace(text))
+      {
         yield break;
+      }
 
       Queue<char> currentToken = new Queue<char>();
       foreach (var c in text)
@@ -29,34 +33,40 @@ namespace MathExpressionResolver
         if (char.IsWhiteSpace(c))
         {
           if (currentToken.Count > 0)
+          {
             throw new ArgumentException(new string(currentToken.ToArray()));
+          }
 
           continue;
         }
 
         currentToken.Enqueue(c);
 
-        if (IsValidToken(currentToken))
+        if (IsValidToken(currentToken, out var token))
         {
-          yield return new string(currentToken.ToArray());
+          yield return token;
           
           currentToken.Clear();
         }
       }
 
       if (currentToken.Count > 0)
+      {
         throw new ArgumentException(currentToken.ToString());
+      }
     }
 
-    private bool IsValidToken(Queue<char> currentToken)
+    private bool IsValidToken(Queue<char> currentToken, out string token)
     {
       // можно не тратить память и ускорить поиском в отсортированном списке
-      var target = new string(currentToken.ToArray());
+      token = new string(currentToken.ToArray());
 
       if (!caseSensetive)
-        target = target.ToLowerInvariant();
+      {
+        token = token.ToLowerInvariant();
+      }
 
-      return tokens.Contains(target);
+      return tokens.Contains(token);
     }
   }
 }

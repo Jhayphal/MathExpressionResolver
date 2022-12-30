@@ -48,6 +48,7 @@
     <Compile Include="IOperator.cs" />
     <Compile Include="ITokenizer.cs" />
     <Compile Include="MathExpressionTokenizer.cs" />
+    <Compile Include="NegativePowerMathExpressionTokenizer.cs" />
     <Compile Include="OperationInfoBase.cs" />
     <Compile Include="OperatorInfo.cs" />
     <Compile Include="Parser.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="ShuntingYard.cs" />
     <Compile Include="SupportedOperators.cs" />
     <Compile Include="Tokenizer.cs" />
-    <Compile Include="TokenType.cs" />
+    <Compile Include="MathExpressionTokenType.cs" />
     <Compile Include="UnaryFunctionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
